@@ -53,18 +53,14 @@ namespace jsonrpc
 
             ~HttpServer();
 
-            /**
-             * Sets the address at which the server will bind when started.
-             * By default, the server listens at all interfaces.  If this
-             * method is called with a non-empty string before starting the
-             * server, then it will only bind to the specified address.
-             * This method returns true on success and false if the given
-             * address could not be set as bind address.
-             */
-            bool SetBindAddress(const std::string& addr);
-
             virtual bool StartListening();
             virtual bool StopListening();
+
+            bool
+            BindLocalhost ()
+            {
+              return SetBindAddress ("127.0.0.1");
+            }
 
             bool virtual SendResponse(const std::string& response,
                     void* addInfo = NULL);
@@ -85,6 +81,16 @@ namespace jsonrpc
             struct MHD_Daemon *daemon;
 
             std::map<std::string, IClientConnectionHandler*> urlhandler;
+
+            /**
+             * Sets the address at which the server will bind when started.
+             * By default, the server listens at all interfaces.  If this
+             * method is called with a non-empty string before starting the
+             * server, then it will only bind to the specified address.
+             * This method returns true on success and false if the given
+             * address could not be set as bind address.
+             */
+            bool SetBindAddress(const std::string& addr);
 
             static int callback(void *cls, struct MHD_Connection *connection, const char *url, const char *method, const char *version, const char *upload_data, size_t *upload_data_size, void **con_cls);
 
