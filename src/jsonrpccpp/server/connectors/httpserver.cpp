@@ -44,6 +44,12 @@ HttpServer::~HttpServer() {
 }
 
 bool HttpServer::SetBindAddress(const std::string& addr) {
+    
+  if(addr  == "")
+  {
+    addr = "127.0.0.1";
+  }    
+    
   if (bind_address != nullptr) {
     freeaddrinfo(bind_address);
     bind_address = nullptr;
